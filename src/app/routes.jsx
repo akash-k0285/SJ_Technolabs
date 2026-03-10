@@ -7,7 +7,7 @@ import { Technologies } from "./pages/Technologies";
 import { CloudAdobe } from "./pages/CloudAdobe";
 import { Contact } from "./pages/Contact";
 import { Layout } from "./components/Layout";
-import Plans from "./pages/Plans";
+import { Plans } from "./pages/Plans";
 
 export const router = createBrowserRouter([
   {
@@ -21,7 +21,7 @@ export const router = createBrowserRouter([
       { path: "technologies", Component: Technologies },
       { path: "cloud-adobe-solutions", Component: CloudAdobe },
       { path: "contact", Component: Contact },
-      { path: "web", Component: Plans },
+      { path: "plans", Component: Plans },
     ],
   },
 ]);

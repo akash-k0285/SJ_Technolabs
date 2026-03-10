@@ -8,6 +8,7 @@ export function Contact() {
     company: "",
     phone: "",
     service: "",
+    plan: "",
     message: "",
   });
 
@@ -279,6 +280,30 @@ export function Contact() {
                         {service}
                       </option>
                     ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label
+                    htmlFor="plan"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
+                    Your Plan *
+                  </label>
+
+                  <select
+                    id="plan"
+                    name="plan"
+                    required
+                    value={formData.plan}
+                    onChange={handleChange}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition bg-white"
+                  >
+                    <option value="">Select one plan</option>
+                    <option value="Free">Free</option>
+                    <option value="Basic">Basic</option>
+                    <option value="Premium">Premium</option>
+                    <option value="Enterprise">Enterprise</option>
                   </select>
                 </div>
 

@@ -14,7 +14,7 @@ export function Header() {
     { name: "Technologies", href: "/technologies" },
     { name: "Cloud & Adobe Solutions", href: "/cloud-adobe-solutions" },
     { name: "Contact Us", href: "/contact" },
-    { name: "Plans", href: "/web" },
+    { name: "Our Plans", href: "/plans" },
   ];
 
   const isActive = (href) => {
