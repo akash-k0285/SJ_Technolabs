@@ -47,7 +47,8 @@ export function Contact() {
               Get in Touch
             </h1>
             <p className="text-xl text-gray-300">
-              Ready to start your digital transformation journey? Let's discuss how we can help you achieve your goals
+              Ready to start your digital transformation journey? Let's discuss
+              how we can help you achieve your goals
             </p>
           </div>
         </div>
@@ -63,7 +64,10 @@ export function Contact() {
                 Let's Talk About Your Project
               </h2>
               <p className="text-lg text-gray-700 mb-8">
-                Our team of experts is ready to discuss your technology needs and help you find the right solutions. Whether you're looking to implement Adobe Experience Cloud, migrate to the cloud, or build custom applications, we're here to help.
+                Our team of experts is ready to discuss your technology needs
+                and help you find the right solutions. Whether you're looking to
+                implement Adobe Experience Cloud, migrate to the cloud, or build
+                custom applications, we're here to help.
               </p>
 
               <div className="space-y-6">
@@ -72,7 +76,9 @@ export function Contact() {
                     <Mail className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Email Us</h3>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      Email Us
+                    </h3>
                     <a
                       href="mailto:info@sjtechnolabs.com"
                       className="text-blue-600 hover:text-blue-700"
@@ -90,7 +96,9 @@ export function Contact() {
                     <Phone className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Call Us</h3>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      Call Us
+                    </h3>
                     <a
                       href="tel:+1234567890"
                       className="text-blue-600 hover:text-blue-700"
@@ -108,12 +116,29 @@ export function Contact() {
                     <MapPin className="h-6 w-6 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-gray-900 mb-1">Visit Us</h3>
+                    <h3 className="font-semibold text-gray-900 mb-1">
+                      Visit Us
+                    </h3>
                     <p className="text-gray-600">
-                      Global Delivery Centers
+                      SJ Technolabs
                       <br />
-                      North America • Europe • Asia Pacific
+                      159, MM Road, Frazer Town, Bengaluru, Karnataka 560005
                     </p>
+                    <div
+                      style={{
+                        position: "relative",
+                        top: "20px",
+                      }}
+                    >
+                      <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3887.5510446791827!2d77.61553257358958!3d13.000542014246111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bae170059709971%3A0x81207e1a30dafad4!2sEmploydemy%20solutions!5e0!3m2!1sen!2sin!4v1773137768382!5m2!1sen!2sin"
+                        width="450"
+                        height="250"
+                        allowfullscreen=""
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                      ></iframe>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -160,7 +185,10 @@ export function Contact() {
               >
                 <input type="hidden" name="form-name" value="contact" />
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Full Name *
                   </label>
                   <input
@@ -176,7 +204,10 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Email Address *
                   </label>
                   <input
@@ -192,7 +223,10 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="company"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Company Name
                   </label>
                   <input
@@ -207,7 +241,10 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="phone"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Phone Number
                   </label>
                   <input
@@ -222,7 +259,10 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="service"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Service Interested In *
                   </label>
                   <select
@@ -243,7 +283,10 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="message"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Message *
                   </label>
                   <textarea
@@ -279,16 +322,22 @@ export function Contact() {
               Global Presence, Local Expertise
             </h2>
             <p className="text-lg text-gray-700 mb-8">
-              With delivery centers across North America, Europe, and Asia Pacific, we provide 24/7 support and services to clients worldwide.
+              With delivery centers across North America, Europe, and Asia
+              Pacific, we provide 24/7 support and services to clients
+              worldwide.
             </p>
 
             <div className="grid md:grid-cols-3 gap-8 mt-12">
               <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="text-4xl font-bold text-blue-600 mb-2">24/7</div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">
+                  24/7
+                </div>
                 <p className="text-gray-700">Global Support Coverage</p>
               </div>
               <div className="bg-white border border-gray-200 rounded-xl p-6">
-                <div className="text-4xl font-bold text-blue-600 mb-2">300+</div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">
+                  300+
+                </div>
                 <p className="text-gray-700">Expert Professionals</p>
               </div>
               <div className="bg-white border border-gray-200 rounded-xl p-6">

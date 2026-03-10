@@ -1,21 +1,31 @@
 import { Link } from "react-router-dom";
-import { ArrowRight, CheckCircle, Users, Target, Zap, Globe } from "lucide-react";
+import {
+  ArrowRight,
+  CheckCircle,
+  Users,
+  Target,
+  Zap,
+  Globe,
+} from "lucide-react";
 
 export function Home() {
   const services = [
     {
       title: "Adobe Experience Cloud",
-      description: "End-to-end AEM, Analytics, Target, Campaign, and Journey Optimizer solutions",
+      description:
+        "End-to-end AEM, Analytics, Target, Campaign, and Journey Optimizer solutions",
       icon: Target,
     },
     {
       title: "Cloud Solutions",
-      description: "AWS, Azure, and GCP migration, modernization, and managed services",
+      description:
+        "AWS, Azure, and GCP migration, modernization, and managed services",
       icon: Globe,
     },
     {
       title: "Custom Development",
-      description: "Enterprise-grade web, mobile, and SaaS applications built to scale",
+      description:
+        "Enterprise-grade web, mobile, and SaaS applications built to scale",
       icon: Zap,
     },
   ];
@@ -54,11 +64,14 @@ export function Home() {
               </span>
             </h1>
             <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-              SJ Technolabs delivers scalable, secure, and high-performance digital platforms powered by Adobe Experience Cloud, leading cloud technologies, and custom enterprise solutions.
+              SJ Technolabs delivers scalable, secure, and high-performance
+              digital platforms powered by Adobe Experience Cloud, leading cloud
+              technologies, and custom enterprise solutions.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Link
-                to="/contact"
+                to="https://calendly.com/khankureakash0285/for-website"
+                target="_blank"
                 className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-8 py-4 rounded-lg hover:from-blue-600 hover:to-cyan-500 transition-all font-medium shadow-lg text-lg"
               >
                 Schedule a Consultation
@@ -81,7 +94,9 @@ export function Home() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat) => (
               <div key={stat.label} className="text-center">
-                <div className="text-4xl font-bold text-blue-600 mb-2">{stat.value}</div>
+                <div className="text-4xl font-bold text-blue-600 mb-2">
+                  {stat.value}
+                </div>
                 <div className="text-gray-600">{stat.label}</div>
               </div>
             ))}
@@ -175,7 +190,8 @@ export function Home() {
                 Why Choose SJ Technolabs?
               </h2>
               <p className="text-lg text-gray-600 mb-8">
-                We combine deep technical expertise with industry best practices to deliver solutions that drive real business outcomes.
+                We combine deep technical expertise with industry best practices
+                to deliver solutions that drive real business outcomes.
               </p>
               <div className="space-y-4">
                 {[
