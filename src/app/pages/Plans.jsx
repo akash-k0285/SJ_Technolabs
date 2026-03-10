@@ -9,9 +9,9 @@ export function Plans() {
       description: "Build first and deploy forever",
       features: [
         "Basic features",
-        "Limited Customization",
+        "Limited customization",
         "With Ads",
-        "No Maintenance",
+        "No maintenance",
       ],
       button: "Start for free"
     },
@@ -21,7 +21,7 @@ export function Plans() {
       description: "Ready to grow big",
       features: [
         "All features of free plan",
-        "Moderate Customization",
+        "Moderate customization",
         "Domain email support",
         "Yearly maintenance included"
       ],
