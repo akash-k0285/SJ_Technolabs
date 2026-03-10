@@ -14,7 +14,7 @@ export function Header() {
     { name: "Technologies", href: "/technologies" },
     { name: "Cloud & Adobe Solutions", href: "/cloud-adobe-solutions" },
     { name: "Contact Us", href: "/contact" },
-    { name: "Our Plans", href: "/plans"},
+    { name: "Our Plans", href: "/plans" },
   ];
 
   const isActive = (href) => {
@@ -28,7 +28,6 @@ export function Header() {
     <header className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
-          
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
@@ -56,12 +55,13 @@ export function Header() {
 
           {/* CTA Button */}
           <div className="hidden lg:block">
-            <Link
-              to="/contact"
+            <a
+              href="https://calendly.com/khankureakash0285/for-website"
+              target="_blank"
               className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-6 py-2.5 rounded-lg hover:from-blue-600 hover:to-cyan-500 transition-all font-medium shadow-lg"
             >
-              Get Started
-            </Link>
+              Book Free Consultation
+            </a>
           </div>
 
           {/* Mobile Menu Button */}
@@ -95,13 +95,14 @@ export function Header() {
                   {item.name}
                 </Link>
               ))}
-              <Link
-                to="/contact"
+              <a
+                href="https://calendly.com/khankureakash0285/for-website"
+                target="_blank"
                 onClick={() => setMobileMenuOpen(false)}
                 className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-4 py-2.5 rounded-lg text-center font-medium mt-2"
               >
-                Get Started
-              </Link>
+                Book Free Consultation
+              </a>
             </div>
           </div>
         )}
