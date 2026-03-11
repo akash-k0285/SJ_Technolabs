@@ -13,39 +13,47 @@ import {
   Settings,
   Shield,
   ArrowRight,
+  ChevronsLeftRightEllipsis,
 } from "lucide-react";
 
 export function Services() {
+  const redirectPath = "/plans";
   const adobeServices = [
     {
       icon: BarChart,
       title: "Adobe Experience Manager (AEM)",
-      description: "Implementation, migration, component development, and managed services for AEM Sites and Assets",
+      description:
+        "Implementation, migration, component development, and managed services for AEM Sites and Assets",
     },
     {
       icon: Target,
       title: "Adobe Analytics & Target",
-      description: "Data collection, reporting, audience segmentation, and A/B testing implementation",
+      description:
+        "Data collection, reporting, audience segmentation, and A/B testing implementation",
     },
     {
       icon: Mail,
       title: "Adobe Campaign & AJO",
-      description: "Marketing automation, customer journey orchestration, and omnichannel campaign management",
+      description:
+        "Marketing automation, customer journey orchestration, and omnichannel campaign management",
     },
     {
       icon: Workflow,
       title: "Customer Journey Analytics (CJA)",
-      description: "Cross-channel analytics, data visualization, and customer insights",
+      description:
+        "Cross-channel analytics, data visualization, and customer insights",
     },
     {
       icon: Database,
       title: "AEM Guides",
-      description: "Component content management system (CCMS) implementation and customization",
+      description:
+        "Component content management system (CCMS) implementation and customization",
     },
     {
       icon: Settings,
       title: "Integration & Migration",
-      description: "Third-party integrations, data migration, and system modernization",
+      description:
+        "Third-party integrations, data migration, and system modernization",
     },
   ];
 
@@ -53,32 +61,38 @@ export function Services() {
     {
       icon: Cloud,
       title: "Cloud Migration & Modernization",
-      description: "Seamless migration of legacy applications to AWS, Azure, or GCP with minimal downtime",
+      description:
+        "Seamless migration of legacy applications to AWS, Azure, or GCP with minimal downtime",
     },
     {
       icon: GitBranch,
       title: "DevOps & CI/CD",
-      description: "Implementation of automated pipelines, infrastructure as code, and continuous delivery",
+      description:
+        "Implementation of automated pipelines, infrastructure as code, and continuous delivery",
     },
     {
       icon: Boxes,
       title: "Microservices & Containers",
-      description: "Architecture design and implementation using Docker, Kubernetes, and serverless",
+      description:
+        "Architecture design and implementation using Docker, Kubernetes, and serverless",
     },
     {
       icon: Shield,
       title: "Cloud Security & Compliance",
-      description: "Security best practices, compliance audits, and identity management",
+      description:
+        "Security best practices, compliance audits, and identity management",
     },
     {
       icon: Database,
       title: "Cloud-Native Architecture",
-      description: "Design and build scalable, resilient cloud-native applications",
+      description:
+        "Design and build scalable, resilient cloud-native applications",
     },
     {
       icon: Settings,
       title: "Managed Cloud Services",
-      description: "24/7 monitoring, maintenance, optimization, and support for your cloud infrastructure",
+      description:
+        "24/7 monitoring, maintenance, optimization, and support for your cloud infrastructure",
     },
   ];
 
@@ -86,7 +100,8 @@ export function Services() {
     {
       icon: Code,
       title: "Enterprise Web Applications",
-      description: "Custom web applications built with React, Angular, Vue.js, and modern frameworks",
+      description:
+        "Custom web applications built with React, Angular, Vue.js, and modern frameworks",
     },
     {
       icon: Smartphone,
@@ -96,12 +111,14 @@ export function Services() {
     {
       icon: Database,
       title: "API Development & Integration",
-      description: "RESTful and GraphQL APIs, microservices, and third-party system integrations",
+      description:
+        "RESTful and GraphQL APIs, microservices, and third-party system integrations",
     },
     {
       icon: Workflow,
       title: "Legacy System Modernization",
-      description: "Transform outdated systems into modern, scalable architectures",
+      description:
+        "Transform outdated systems into modern, scalable architectures",
     },
     {
       icon: Cloud,
@@ -111,15 +128,34 @@ export function Services() {
     {
       icon: Settings,
       title: "Application Support & Maintenance",
-      description: "Ongoing support, bug fixes, performance optimization, and feature enhancements",
+      description:
+        "Ongoing support, bug fixes, performance optimization, and feature enhancements",
+    },
+    {
+      icon: ChevronsLeftRightEllipsis,
+      title: "Web Site Creation",
+      description:
+        "End-to-end website development, bug fixes, performance optimization, and feature enhancements",
     },
   ];
 
   const technologies = [
-    { category: "Backend", items: ["Java", "Spring Boot", "C#", ".NET", "Node.js"] },
-    { category: "Frontend", items: ["React", "Angular", "Vue.js", "TypeScript"] },
-    { category: "Databases", items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "DynamoDB"] },
-    { category: "Cloud", items: ["AWS", "Azure", "GCP", "Docker", "Kubernetes"] },
+    {
+      category: "Backend",
+      items: ["Java", "Spring Boot", "C#", ".NET", "Node.js"],
+    },
+    {
+      category: "Frontend",
+      items: ["React", "Angular", "Vue.js", "TypeScript"],
+    },
+    {
+      category: "Databases",
+      items: ["PostgreSQL", "MySQL", "MongoDB", "Redis", "DynamoDB"],
+    },
+    {
+      category: "Cloud",
+      items: ["AWS", "Azure", "GCP", "Docker", "Kubernetes"],
+    },
   ];
 
   return (
@@ -132,7 +168,8 @@ export function Services() {
               Our Services
             </h1>
             <p className="text-xl text-gray-300">
-              Comprehensive technology solutions designed to accelerate your digital transformation journey
+              Comprehensive technology solutions designed to accelerate your
+              digital transformation journey
             </p>
           </div>
         </div>
@@ -146,7 +183,8 @@ export function Services() {
               Adobe Experience Cloud Solutions
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Full-spectrum Adobe services from implementation to managed support
+              Full-spectrum Adobe services from implementation to managed
+              support
             </p>
           </div>
 
@@ -232,18 +270,20 @@ export function Services() {
             {developmentServices.map((service, index) => {
               const Icon = service.icon;
               return (
-                <div
-                  key={index}
-                  className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow"
-                >
-                  <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-6">
-                    <Icon className="h-7 w-7 text-white" />
+                <Link to={redirectPath}>
+                  <div
+                    key={index}
+                    className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-6">
+                      <Icon className="h-7 w-7 text-white" />
+                    </div>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600">{service.description}</p>
                   </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-600">{service.description}</p>
-                </div>
+                </Link>
               );
             })}
           </div>
