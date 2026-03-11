@@ -61,7 +61,7 @@ export function Header() {
                     onClick={() => setServicesOpen(false)}
                     className="px-4 py-2 hover:bg-slate-700"
                   >
-                    Services
+                    Our services
                   </Link>
 
                   <Link
@@ -98,7 +98,7 @@ export function Header() {
                 onClick={() => setAboutOpen(!aboutOpen)}
                 className="flex items-center gap-1 px-3 py-2 text-gray-300 hover:bg-slate-800 hover:text-white rounded-md cursor-pointer"
               >
-                About Us
+                Company
                 <ChevronDown size={16} />
               </button>
 
