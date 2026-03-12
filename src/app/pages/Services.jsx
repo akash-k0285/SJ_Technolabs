@@ -269,8 +269,24 @@ export function Services() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {developmentServices.map((service, index) => {
               const Icon = service.icon;
-              return (
-                <Link to={redirectPath}>
+              const serviceName = service?.title;
+              {
+                return serviceName == "Web Site Creation" ? (
+                  <Link to={redirectPath}>
+                    <div
+                      key={index}
+                      className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow"
+                    >
+                      <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-6">
+                        <Icon className="h-7 w-7 text-white" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                        {service.title}
+                      </h3>
+                      <p className="text-gray-600">{service.description}</p>
+                    </div>
+                  </Link>
+                ) : (
                   <div
                     key={index}
                     className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow"
@@ -283,8 +299,8 @@ export function Services() {
                     </h3>
                     <p className="text-gray-600">{service.description}</p>
                   </div>
-                </Link>
-              );
+                );
+              }
             })}
           </div>
         </div>
