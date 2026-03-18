@@ -104,7 +104,7 @@ export function Contact() {
                       href="tel:+1234567890"
                       className="text-blue-600 hover:text-blue-700"
                     >
-                      +1 (234) 567-890
+                      +91 9739732001
                     </a>
                     <p className="text-gray-600 text-sm mt-1">
                       Mon-Fri from 9am to 6pm EST

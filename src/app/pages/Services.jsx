@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 
 export function Services() {
-  const redirectPath = "/plans";
+  // const redirectPath = "/plans";
   const adobeServices = [
     {
       icon: BarChart,
@@ -272,21 +272,21 @@ export function Services() {
               const serviceName = service?.title;
               {
                 return serviceName == "Web Site Creation" ? (
-                  <Link to={redirectPath}>
-                    <div
-                      key={index}
-                      className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow"
-                    >
-                      <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-6">
-                        <Icon className="h-7 w-7 text-white" />
-                      </div>
-                      <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                        {service.title}
-                      </h3>
-                      <p className="text-gray-600">{service.description}</p>
+                  // <Link to={redirectPath}>
+                  <div
+                    key={index}
+                    className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow"
+                  >
+                    <div className="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-6">
+                      <Icon className="h-7 w-7 text-white" />
                     </div>
-                  </Link>
+                    <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                      {service.title}
+                    </h3>
+                    <p className="text-gray-600">{service.description}</p>
+                  </div>
                 ) : (
+                  // </Link>
                   <div
                     key={index}
                     className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-shadow"
