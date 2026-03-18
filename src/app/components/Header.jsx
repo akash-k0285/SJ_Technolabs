@@ -19,7 +19,6 @@ export function Header() {
     <header className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-20">
-
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-cyan-400 rounded-lg flex items-center justify-center">
@@ -30,7 +29,6 @@ export function Header() {
 
           {/* Desktop Navigation */}
           <div className="hidden lg:flex items-center space-x-6 ml-10">
-
             {/* Home */}
             <Link
               to="/"
@@ -55,7 +53,6 @@ export function Header() {
 
               {servicesOpen && (
                 <div className="absolute top-full mt-2 left-0 w-56 bg-slate-800 border border-slate-700 rounded-lg shadow-lg flex flex-col z-50">
-
                   <Link
                     to="/services"
                     onClick={() => setServicesOpen(false)}
@@ -87,7 +84,6 @@ export function Header() {
                   >
                     Cloud & Adobe Solutions
                   </Link>
-
                 </div>
               )}
             </div>
@@ -104,7 +100,6 @@ export function Header() {
 
               {aboutOpen && (
                 <div className="absolute top-full mt-2 left-0 w-48 bg-slate-800 border border-slate-700 rounded-lg shadow-lg flex flex-col z-50">
-
                   <Link
                     to="/about"
                     onClick={() => setAboutOpen(false)}
@@ -120,13 +115,12 @@ export function Header() {
                   >
                     Contact Us
                   </Link>
-
                 </div>
               )}
             </div>
 
             {/* Our Plans */}
-            <Link
+            {/* <Link
               to="/plans"
               className={`px-3 py-2 rounded-md text-sm transition-colors ${
                 isActive("/plans")
@@ -135,8 +129,7 @@ export function Header() {
               }`}
             >
               Our Plans
-            </Link>
-
+            </Link> */}
           </div>
 
           {/* CTA Button (Extreme Right) */}
@@ -161,14 +154,12 @@ export function Header() {
               <Menu className="h-6 w-6" />
             )}
           </button>
-
         </div>
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
           <div className="lg:hidden py-4 border-t border-slate-800">
             <div className="flex flex-col space-y-2">
-
               <Link
                 to="/"
                 onClick={() => setMobileMenuOpen(false)}
@@ -217,13 +208,13 @@ export function Header() {
                 Cloud & Adobe Solutions
               </Link>
 
-              <Link
+              {/* <Link
                 to="/plans"
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2.5 hover:bg-slate-800 rounded-md"
               >
                 Our Plans
-              </Link>
+              </Link> */}
 
               <Link
                 to="/contact"
@@ -240,7 +231,6 @@ export function Header() {
               >
                 Book Free Consultation
               </a>
-
             </div>
           </div>
         )}
