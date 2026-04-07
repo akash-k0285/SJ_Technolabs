@@ -104,7 +104,7 @@ export function Contact() {
                       href="tel:+1234567890"
                       className="text-blue-600 hover:text-blue-700"
                     >
-                      +91 9739732001
+                      +1 (234) 567-890
                     </a>
                     <p className="text-gray-600 text-sm mt-1">
                       Mon-Fri from 9am to 6pm EST
@@ -284,7 +284,7 @@ export function Contact() {
                 </div>
 
                 <div>
-                  <label
+                  {/* <label
                     htmlFor="plan"
                     className="block text-sm font-medium text-gray-700 mb-2"
                   >
@@ -304,7 +304,7 @@ export function Contact() {
                     <option value="Basic">Basic</option>
                     <option value="Premium">Premium</option>
                     <option value="Enterprise">Enterprise</option>
-                  </select>
+                  </select> */}
                 </div>
 
                 <div>
@@ -321,7 +321,7 @@ export function Contact() {
                     rows={5}
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none"
+                    className="w-full px-4 py-3 pb-15 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition resize-none"
                     placeholder="Tell us about your project..."
                   />
                 </div>

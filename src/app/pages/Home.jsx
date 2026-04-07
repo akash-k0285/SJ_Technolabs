@@ -1,8 +1,11 @@
 import { Link } from "react-router-dom";
+import { WhoWeWorkWith } from "../components/Whoweworkwith";
 import {
   ArrowRight,
   CheckCircle,
   Users,
+  Search,
+  MessageCircle,
   Target,
   Zap,
   Globe,
@@ -34,11 +37,11 @@ export function Home() {
     "E-commerce",
     "Retail",
     "Telecommunications",
-    "Banking & Financial Services",
+    "BFSI & Fin Tech",
     "Healthcare",
-    "Manufacturing",
-    "Media & Entertainment",
-    "Education",
+    "Saas & Technology",
+    "Media & Publishing",
+    "Telecommunications",
   ];
 
   const stats = [
@@ -50,44 +53,73 @@ export function Home() {
 
   return (
     <div className="bg-white">
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white overflow-hidden">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMSIvPjwvcGF0dGVybj48L2RlZnM+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmlkKSIvPjwvc3ZnPg==')]"></div>
-        </div>
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32 relative">
-          <div className="max-w-4xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
-              Transform Your Enterprise with
-              <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-400">
-                Cutting-Edge Technology
-              </span>
+      {/* ── 1. HERO ─────────────────────────────────────────────────────────── */}
+      <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-24">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-4xl mx-auto text-center">
+            {/* Eyebrow */}
+            {/* <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-4 py-1.5 text-sm text-gray-300 mb-6">
+              <span className="w-2 h-2 rounded-full bg-cyan-400 inline-block"></span>
+              Adobe Experience Cloud Partner
+            </div> */}
+
+            <h1 className="text-4xl md:text-5xl font-bold mb-5 leading-tight">
+              Scalable Adobe Experience Cloud
+              <br />
+              <span className="text-cyan-400">solutions for enterprise</span>
             </h1>
-            <p className="text-xl text-gray-300 mb-8 max-w-2xl">
-              SJ Technolabs delivers scalable, secure, and high-performance
-              digital platforms powered by Adobe Experience Cloud, leading cloud
-              technologies, and custom enterprise solutions.
+            <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-10">
+              We help mid-to-large enterprises implement, migrate, and scale
+              Adobe Experience Cloud with secure, high-performance architecture
+              — on time and within budget.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4">
+
+            {/* 3 CTAs */}
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
               <Link
-                to="https://calendly.com/khankureakash0285/for-website"
-                target="_blank"
-                className="inline-flex items-center justify-center bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-8 py-4 rounded-lg hover:from-blue-600 hover:to-cyan-500 transition-all font-medium shadow-lg text-lg"
+                to="/contact"
+                className="inline-flex items-center justify-center bg-cyan-500 hover:bg-cyan-400 text-white font-medium px-6 py-3 rounded-lg transition-colors gap-2"
               >
-                Schedule a Consultation
-                <ArrowRight className="ml-2 h-5 w-5" />
+                Get Architecture Review
               </Link>
+
               <Link
-                to="/services"
-                className="inline-flex items-center justify-center bg-white/10 backdrop-blur-sm text-white px-8 py-4 rounded-lg hover:bg-white/20 transition-all font-medium border border-white/20 text-lg"
+                to="/contact?subject=expert"
+                className="inline-flex items-center justify-center bg-white/10 hover:bg-white/20 border border-white/30 text-white font-medium px-6 py-3 rounded-lg transition-colors gap-2"
               >
-                Explore Our Services
+                <MessageCircle className="h-4 w-4" />
+                Talk to an Expert in 24 Hours
               </Link>
             </div>
           </div>
         </div>
       </section>
-
+      {/* ── 2. TRUSTED BY STRIP ─────────────────────────────────────────────── */}
+      <section className="border-b border-gray-100 py-10 bg-gray-50">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <p className="text-center text-xs font-semibold text-gray-400 uppercase tracking-widest mb-7">
+            Trusted by enterprise teams at
+          </p>
+          <div className="flex flex-wrap items-center justify-center gap-10 opacity-60">
+            {/* Placeholder client logos — replace with real <img> tags */}
+            {[
+              "Acme Corp",
+              "GlobalRetail",
+              "FinServ Ltd",
+              "HealthTech",
+              "MediaGroup",
+            ].map((name) => (
+              <div
+                key={name}
+                className="h-8 flex items-center justify-center text-sm font-bold text-gray-400 tracking-wide uppercase"
+              >
+                {name}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+      <WhoWeWorkWith />
       {/* Stats Section */}
       <section className="bg-slate-50 py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,12 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export function Header() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const servicesRef = useRef(null);
+  const aboutRef = useRef(null);
 
   const isActive = (href) => {
     if (href === "/") {
@@ -15,6 +17,22 @@ export function Header() {
     return location.pathname.startsWith(href);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
+        setServicesOpen(false);
+      }
+
+      if (aboutRef.current && !aboutRef.current.contains(event.target)) {
+        setAboutOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <header className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,9 +60,12 @@ export function Header() {
             </Link>
 
             {/* Services Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={servicesRef}>
               <button
-                onClick={() => setServicesOpen(!servicesOpen)}
+                onClick={() => {
+                  setServicesOpen(!servicesOpen);
+                  setAboutOpen(false);
+                }}
                 className="flex items-center gap-1 px-3 py-2 text-gray-300 hover:bg-slate-800 hover:text-white rounded-md cursor-pointer"
               >
                 Services
@@ -89,9 +110,12 @@ export function Header() {
             </div>
 
             {/* About Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={aboutRef}>
               <button
-                onClick={() => setAboutOpen(!aboutOpen)}
+                onClick={() => {
+                  setAboutOpen(!aboutOpen);
+                  setServicesOpen(false);
+                }}
                 className="flex items-center gap-1 px-3 py-2 text-gray-300 hover:bg-slate-800 hover:text-white rounded-md cursor-pointer"
               >
                 Company
@@ -119,8 +143,8 @@ export function Header() {
               )}
             </div>
 
-            {/* Our Plans */}
-            {/* <Link
+            {/* Our Plans 
+            <Link
               to="/plans"
               className={`px-3 py-2 rounded-md text-sm transition-colors ${
                 isActive("/plans")
@@ -129,7 +153,8 @@ export function Header() {
               }`}
             >
               Our Plans
-            </Link> */}
+            </Link>
+            */}
           </div>
 
           {/* CTA Button (Extreme Right) */}
@@ -208,13 +233,13 @@ export function Header() {
                 Cloud & Adobe Solutions
               </Link>
 
-              {/* <Link
+              <Link
                 to="/plans"
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2.5 hover:bg-slate-800 rounded-md"
               >
                 Our Plans
-              </Link> */}
+              </Link>
 
               <Link
                 to="/contact"
