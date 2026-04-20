@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import {
   Cloud,
@@ -16,17 +16,14 @@ import {
   ArrowRight,
   CheckCircle,
   Download,
-  Search,
   Calendar,
   ChevronRight,
   Star,
-  TrendingUp,
-  Layers,
-  Zap,
-  Users,
+  ArrowLeftRight,
 } from "lucide-react";
+import video from "../../assets/globe.mp4";
 
-// ─── DATA ────────────────────────────────────────────────────────────────────
+// ─── DATA (unchanged) ────────────────────────────────────────────────────────
 
 const adobeServices = [
   {
@@ -246,126 +243,217 @@ const technologies = [
   },
 ];
 
-const processSteps = [
-  {
-    number: "01",
-    title: "Discovery",
-    description:
-      "We audit your existing architecture, stakeholder goals, and technical constraints — producing a detailed requirements document and risk register.",
-    deliverable: "Requirements doc + risk register",
-    icon: Search,
-  },
-  {
-    number: "02",
-    title: "Architecture",
-    description:
-      "Our architects design a solution blueprint tailored to your scale, security requirements, and cloud strategy — reviewed and signed off before any code is written.",
-    deliverable: "Architecture blueprint + ADRs",
-    icon: Layers,
-  },
-  {
-    number: "03",
-    title: "Development",
-    description:
-      "Agile sprints with bi-weekly demos. Every sprint delivers tested, documented, working software — no surprises at go-live.",
-    deliverable: "Sprint demos + code reviews",
-    icon: Code,
-  },
-  {
-    number: "04",
-    title: "Deployment",
-    description:
-      "Zero-downtime deployments with automated rollback, infrastructure-as-code, and full runbook documentation for your team.",
-    deliverable: "IaC runbook + deployment pipeline",
-    icon: Zap,
-  },
-  {
-    number: "05",
-    title: "Support",
-    description:
-      "SLA-backed post-launch support with 24/7 monitoring, performance reporting, and a dedicated point of contact for your team.",
-    deliverable: "SLA agreement + monthly health report",
-    icon: Shield,
-  },
-];
+// ─── HOOKS ───────────────────────────────────────────────────────────────────
 
-const caseStudies = [
-  {
-    industry: "Retail",
-    service: "AEM Migration",
-    problem:
-      "A global retailer's legacy CMS couldn't support 14 regional sites, causing inconsistent experiences and a 3-week content publishing cycle.",
-    solution:
-      "Migrated to AEM Sites with a shared component library and automated publishing workflows.",
-    metrics: [
-      { value: "62%", label: "faster page load" },
-      { value: "3 weeks → 2 hrs", label: "publish cycle" },
-      { value: "$340K", label: "annual infra savings" },
-    ],
-  },
-  {
-    industry: "FinTech",
-    service: "Cloud Migration",
-    problem:
-      "An on-premise core banking app was hitting capacity limits during peak trading hours, causing downtime and SLA breaches.",
-    solution:
-      "Lift-and-shift to AWS with auto-scaling and a blue/green deployment pipeline.",
-    metrics: [
-      { value: "99.98%", label: "uptime post-migration" },
-      { value: "0", label: "SLA breaches in 12 months" },
-      { value: "41%", label: "infrastructure cost reduction" },
-    ],
-  },
-  {
-    industry: "Healthcare",
-    service: "Adobe Analytics",
-    problem:
-      "Patient portal had high drop-off at checkout but no visibility into where or why users were abandoning the flow.",
-    solution:
-      "Implemented Adobe Analytics with custom event tracking and A/B testing via Adobe Target.",
-    metrics: [
-      { value: "28%", label: "increase in completions" },
-      { value: "4.2×", label: "ROI on A/B tests" },
-      { value: "6 weeks", label: "to first actionable insight" },
-    ],
-  },
-];
+function useInView(options = {}) {
+  const ref = useRef(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.12, ...options },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return [ref, inView];
+}
 
-const testimonials = [
-  {
-    quote:
-      "SJ Technolabs delivered our AEM migration on time and under budget. Their architecture approach eliminated the performance bottlenecks we'd been dealing with for two years.",
-    name: "Sarah Mitchell",
-    title: "VP of Digital Experience",
-    company: "Global Retail Group",
-    initials: "SM",
-  },
-  {
-    quote:
-      "The team's Adobe Analytics implementation gave us insight into our customer journey we simply didn't have before. The data quality is exceptional.",
-    name: "James Okafor",
-    title: "Head of Marketing Technology",
-    company: "FinServ Ltd",
-    initials: "JO",
-  },
-  {
-    quote:
-      "What impressed us most was their security-first approach to cloud architecture. They flagged risks we hadn't even considered and handled the entire compliance audit.",
-    name: "Priya Sharma",
-    title: "CTO",
-    company: "HealthTech Platform",
-    initials: "PS",
-  },
-];
+// ─── FADE-IN WRAPPER ─────────────────────────────────────────────────────────
 
-// ─── SUB-COMPONENTS ──────────────────────────────────────────────────────────
-
-function ServiceCard({ service, accentClass }) {
-  const Icon = service.icon;
+function FadeIn({ children, delay = 0, direction = "up", className = "" }) {
+  const [ref, inView] = useInView();
+  const dirs = {
+    up: "translateY(30px)",
+    left: "translateX(-30px)",
+    right: "translateX(30px)",
+    none: "none",
+  };
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-8 hover:shadow-xl transition-all hover:-translate-y-1 flex flex-col">
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translate(0,0)" : dirs[direction],
+        transition: `opacity 0.6s ease ${delay}ms, transform 0.6s ease ${delay}ms`,
+      }}
+    >
+      {children}
+    </div>
+  );
+}
+// ─── FLIP SERVICE CARD ───────────────────────────────────────────────────────
+
+const CARD_GRADIENTS = [
+  ["#1D9E75", "#378ADD"], // teal → blue
+  ["#534AB7", "#7F77DD"], // violet → purple
+  ["#378ADD", "#1D9E75"], // blue → teal
+  ["#534AB7", "#7F77DD"], //
+  ["#1D9E75", "#378ADD"], // teal → blue
+  ["#534AB7", "#7F77DD"], // violet → purple
+  ["#378ADD", "#1D9E75"], //
+];
+
+function FlipServiceCard({ service, index, delay = 0 }) {
+  const Icon = service.icon;
+  const [flipped, setFlipped] = useState(false);
+  const [ref, inView] = useInView();
+  const [from, to] = CARD_GRADIENTS[index % CARD_GRADIENTS.length];
+
+  const isTouchDevice =
+    typeof window !== "undefined" && window.matchMedia("(hover: none)").matches;
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      style={{
+        height: "320px",
+        perspective: "1000px",
+        opacity: inView ? 1 : 0,
+        transform: inView ? "translateY(0)" : "translateY(24px)",
+        transition: `opacity 0.55s ease ${delay}ms, transform 0.45s ease ${delay}ms`,
+      }}
+      onClick={() => isTouchDevice && setFlipped((f) => !f)}
+      onMouseEnter={() => !isTouchDevice && setFlipped(true)}
+      onMouseLeave={() => !isTouchDevice && setFlipped(false)}
+    >
+      {/* Inner */}
+      <div
+        className="relative w-full h-full"
+        style={{
+          transformStyle: "preserve-3d",
+          transition: "transform 0.75s cubic-bezier(0.4,0.2,0.2,1)",
+          transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+        }}
+      >
+        {/* ── FRONT ── */}
+        <div
+          className="absolute inset-0 rounded-xl overflow-hidden flex flex-col justify-end p-7"
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+          }}
+        >
+          {/* gradient bg */}
+          <div
+            className="absolute inset-0"
+            style={{ background: `linear-gradient(135deg, ${from}, ${to})` }}
+          />
+          {/* content */}
+          <div className="relative z-10">
+            <div
+              className="w-11 h-11 rounded-lg flex items-center justify-center mb-4"
+              style={{ background: "rgba(255,255,255,0.18)" }}
+            >
+              <Icon className="h-5 w-5 text-white" strokeWidth={1.8} />
+            </div>
+            <p className="text-xs font-medium uppercase tracking-widest text-white/60 mb-1">
+              {service.label ?? "Service"}
+            </p>
+            <h3 className="text-lg font-medium text-white leading-snug">
+              {service.title}
+            </h3>
+            <p className="text-xs text-white/40 mt-2 flex items-center gap-1">
+              <ArrowLeftRight className="h-3 w-3" />
+              {isTouchDevice ? "Tap" : "Hover"} to flip
+            </p>
+          </div>
+        </div>
+
+        {/* ── BACK ── */}
+        <div
+          className="absolute inset-0 rounded-xl overflow-hidden bg-white border border-gray-100 flex flex-col"
+          style={{
+            backfaceVisibility: "hidden",
+            WebkitBackfaceVisibility: "hidden",
+            transform: "rotateY(180deg)",
+          }}
+        >
+          {/* clipped cover */}
+          <div
+            className="relative flex-shrink-0 h-20 flex items-end pb-4 px-5"
+            style={{
+              background: `linear-gradient(135deg, ${from}, ${to})`,
+              clipPath: "polygon(0 0, 100% 0, 100% 78%, 0 100%)",
+            }}
+          >
+            <span className="text-xs font-medium uppercase tracking-widest text-white">
+              {service.title}
+            </span>
+          </div>
+
+          {/* body */}
+          <div className="flex flex-col gap-3 px-5 py-4 flex-1 overflow-hidden">
+            <p className="text-sm text-gray-500 leading-relaxed line-clamp-3">
+              {service.description}
+            </p>
+            <hr className="border-gray-100" />
+            <div>
+              <p className="text-[10px] uppercase tracking-widest text-gray-400 mb-1">
+                Use cases
+              </p>
+              <p className="text-sm text-gray-800 leading-snug">
+                {service.useCase}
+              </p>
+            </div>
+            <hr className="border-gray-100" />
+
+            <div className="flex items-start gap-2 mb-5">
+              <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <span className="text-sm text-gray-800 leading-snug">
+                {service.deliverable}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+// ─── SERVICE CARD ────────────────────────────────────────────────────────────
+
+function ServiceCard({ service, accentClass, delay = 0 }) {
+  const Icon = service.icon;
+  const [hovered, setHovered] = useState(false);
+  const [ref, inView] = useInView();
+  return (
+    <div
+      ref={ref}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="service-card bg-white border border-gray-200 rounded-xl p-8 flex flex-col"
+      style={{
+        opacity: inView ? 1 : 0,
+        transform: inView
+          ? hovered
+            ? "translateY(-6px)"
+            : "translateY(0)"
+          : "translateY(28px)",
+        transition: `opacity 0.55s ease ${delay}ms, transform 0.35s cubic-bezier(0.34,1.56,0.64,1)`,
+        boxShadow: hovered
+          ? "0 20px 48px rgba(0,0,0,0.11)"
+          : "0 1px 3px rgba(0,0,0,0.06)",
+      }}
+    >
+      {/* Icon */}
       <div
         className={`w-14 h-14 bg-gradient-to-br ${accentClass} rounded-lg flex items-center justify-center mb-6`}
+        style={{
+          transform: hovered
+            ? "scale(1.08) rotate(-3deg)"
+            : "scale(1) rotate(0deg)",
+          transition: "transform 0.35s cubic-bezier(0.34,1.56,0.64,1)",
+          boxShadow: hovered ? "0 8px 20px rgba(0,0,0,0.2)" : "none",
+        }}
       >
         <Icon className="h-7 w-7 text-white" />
       </div>
@@ -375,7 +463,6 @@ function ServiceCard({ service, accentClass }) {
       </h3>
       <p className="text-gray-600 mb-4 flex-1">{service.description}</p>
 
-      {/* Use case badge */}
       <div className="flex items-center gap-2 mb-3">
         <span className="text-xs font-medium bg-gray-100 text-gray-600 px-2.5 py-1 rounded-full">
           Use case
@@ -383,9 +470,14 @@ function ServiceCard({ service, accentClass }) {
         <span className="text-xs text-gray-700">{service.useCase}</span>
       </div>
 
-      {/* Deliverable */}
       <div className="flex items-start gap-2 mb-5">
-        <CheckCircle className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0" />
+        <CheckCircle
+          className="h-4 w-4 text-emerald-500 mt-0.5 flex-shrink-0"
+          style={{
+            transition: "transform 0.2s ease",
+            transform: hovered ? "scale(1.2)" : "scale(1)",
+          }}
+        />
         <span className="text-xs text-gray-600">{service.deliverable}</span>
       </div>
 
@@ -394,21 +486,35 @@ function ServiceCard({ service, accentClass }) {
         className="inline-flex items-center text-sm font-medium text-blue-600 hover:text-blue-700 group mt-auto"
       >
         Learn more
-        <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+        <ChevronRight className="h-4 w-4 ml-1 transition-transform duration-200 group-hover:translate-x-1.5" />
       </Link>
+
+      {/* Bottom accent line */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          height: "2px",
+          borderRadius: "0 0 12px 12px",
+          background: `linear-gradient(90deg, var(--accent-from, #3b82f6), var(--accent-to, #06b6d4))`,
+          width: hovered ? "100%" : "0%",
+          transition: "width 0.35s ease",
+        }}
+      />
     </div>
   );
 }
 
+// ─── LEAD MAGNET FORM ────────────────────────────────────────────────────────
+
 function LeadMagnetForm({ title, description, resourceName, buttonLabel }) {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     if (email) setSubmitted(true);
   };
-
   return (
     <div className="bg-white border border-gray-200 rounded-xl p-6 flex flex-col gap-3">
       <div className="flex items-center gap-2 mb-1">
@@ -421,8 +527,8 @@ function LeadMagnetForm({ title, description, resourceName, buttonLabel }) {
       <p className="text-sm text-gray-600">{description}</p>
       {submitted ? (
         <div className="flex items-center gap-2 text-emerald-600 text-sm font-medium mt-1">
-          <CheckCircle className="h-4 w-4" />
-          Check your inbox — we've sent {resourceName}!
+          <CheckCircle className="h-4 w-4" /> Check your inbox — we've sent{" "}
+          {resourceName}!
         </div>
       ) : (
         <form
@@ -439,7 +545,7 @@ function LeadMagnetForm({ title, description, resourceName, buttonLabel }) {
           />
           <button
             type="submit"
-            className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium sm:whitespace-nowrap w-full sm:w-auto"
+            className="text-sm bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
           >
             {buttonLabel}
           </button>
@@ -448,467 +554,462 @@ function LeadMagnetForm({ title, description, resourceName, buttonLabel }) {
     </div>
   );
 }
+// ─── SECTION HEADER ──────────────────────────────────────────────────────────
+
+function SectionHeader({ eyebrow, title, subtitle, light = false }) {
+  return (
+    <FadeIn>
+      <div className="text-center mb-16">
+        {eyebrow && (
+          <span
+            className={`text-xs font-semibold uppercase tracking-widest mb-3 block ${light ? "text-cyan-400" : "text-blue-600"}`}
+          >
+            {eyebrow}
+          </span>
+        )}
+        <h2
+          className={`text-3xl md:text-4xl font-bold mb-4 ${light ? "text-white" : "text-gray-900"}`}
+        >
+          {title}
+        </h2>
+        {subtitle && (
+          <p
+            className={`text-xl max-w-3xl mx-auto ${light ? "text-gray-300" : "text-gray-600"}`}
+          >
+            {subtitle}
+          </p>
+        )}
+      </div>
+    </FadeIn>
+  );
+}
 
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
 export function Services() {
   const [bottomEmail, setBottomEmail] = useState("");
   const [bottomSubmitted, setBottomSubmitted] = useState(false);
-
   const handleBottomSubmit = (e) => {
     e.preventDefault();
     if (bottomEmail) setBottomSubmitted(true);
   };
 
   return (
-    <div className="bg-white">
-      {/* Hero Section */}
-      <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-4xl mx-auto text-center">
-            <h1 className="text-4xl md:text-5xl font-bold mb-6">
-              Our Services
-            </h1>
-            <p className="text-xl text-gray-300">
-              Comprehensive technology solutions designed to accelerate your
-              digital transformation journey
-            </p>
-          </div>
-        </div>
-      </section>
+    <>
+      <style>{`
+        @keyframes shimmer {
+          0% { background-position: -200% center; }
+          100% { background-position: 200% center; }
+        }
+        @keyframes fade-up {
+          from { opacity: 0; transform: translateY(28px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-10px); }
+        }
+        @keyframes gradient-pan {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        @keyframes connector-grow {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
 
-      {/* ── 3. ADOBE EXPERIENCE CLOUD ───────────────────────────────────────── */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            {/* <span className="text-xs font-semibold text-red-500 uppercase tracking-widest mb-3 block">
-              Adobe Specialisation
-            </span> */}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Adobe Experience Cloud Solutions
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Full-spectrum Adobe services from implementation to managed
-              support
-            </p>
-          </div>
+        .hero-title {
+          opacity: 0;
+          animation: fade-up 0.75s ease 0.1s forwards;
+        }
+        .hero-sub {
+          opacity: 0;
+          animation: fade-up 0.75s ease 0.3s forwards;
+        }
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {adobeServices.map((service, index) => (
-              <ServiceCard
-                key={index}
-                service={service}
-                accentClass="from-red-500 to-orange-500"
-              />
-            ))}
-          </div>
+        .service-card { position: relative; }
 
-          {/* AEM lead magnet */}
-          <div className="mt-12 max-w-2xl mx-auto">
-            <LeadMagnetForm
-              title="AEM Implementation Guide"
-              description="A step-by-step guide covering architecture decisions, component strategy, content models, and go-live checklist for AEM projects."
-              resourceName="the AEM Implementation Guide"
-              buttonLabel="Download free"
-            />
-          </div>
-        </div>
-      </section>
+        /* Gradient CTA button */
+        .btn-gradient {
+          background: linear-gradient(90deg, #3b82f6, #06b6d4, #3b82f6);
+          background-size: 200% auto;
+          animation: shimmer 3s linear infinite;
+          transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .btn-gradient:hover {
+          transform: scale(1.04);
+          box-shadow: 0 8px 24px rgba(6,182,212,0.4);
+        }
 
-      {/* ── 4. CASE STUDIES ─────────────────────────────────────────────────── */}
-      <section className="bg-slate-50 py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-            {/* <span className="text-xs font-semibold text-blue-600 uppercase tracking-widest mb-3 block">
-              Proven results
-            </span> */}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Client success stories
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Real outcomes from real enterprise engagements
-            </p>
-          </div>
+        .hero-blob {
+          position: absolute;
+          border-radius: 50%;
+          pointer-events: none;
+        }
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {caseStudies.map((cs, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-xl border border-gray-200 p-7 hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-center justify-between mb-5">
-                  <span className="text-xs font-semibold bg-blue-50 text-blue-700 px-3 py-1 rounded-full">
-                    {cs.industry}
-                  </span>
-                  <span className="text-xs text-gray-400">{cs.service}</span>
-                </div>
+        /* Process connector line */
+        .connector-line {
+          transform-origin: left;
+        }
 
-                <div className="mb-4">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
-                    Problem
-                  </p>
-                  <p className="text-sm text-gray-700">{cs.problem}</p>
-                </div>
+        /* Bottom CTA card animated border */
+        @keyframes border-rotate {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
 
-                <div className="mb-5">
-                  <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
-                    Solution
-                  </p>
-                  <p className="text-sm text-gray-700">{cs.solution}</p>
-                </div>
+        .learn-more-link {
+          position: relative;
+          display: inline-flex;
+          align-items: center;
+        }
+        .learn-more-link::after {
+          content: '';
+          position: absolute;
+          bottom: -1px; left: 0;
+          height: 1px; width: 0;
+          background: #2563eb;
+          transition: width 0.3s ease;
+        }
+        .learn-more-link:hover::after { width: 100%; }
 
-                <div className="grid grid-cols-3 gap-2 pt-4 border-t border-gray-100">
-                  {cs.metrics.map((m, j) => (
-                    <div key={j} className="text-center">
-                      <div className="text-lg font-bold text-blue-600 leading-tight">
-                        {m.value}
-                      </div>
-                      <div className="text-xs text-gray-500 mt-0.5 leading-tight">
-                        {m.label}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+        /* Star rating entrance */
+        @keyframes pop-in {
+          0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+          80% { transform: scale(1.15) rotate(3deg); }
+          100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+      `}</style>
 
-      {/* ── 5. CLOUD SOLUTIONS ──────────────────────────────────────────────── */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            {/* <span className="text-xs font-semibold text-blue-500 uppercase tracking-widest mb-3 block">
-              Multi-cloud
-            </span> */}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Cloud Solutions
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Multi-cloud expertise across AWS, Azure, and Google Cloud Platform
-            </p>
-          </div>
+      <div className="bg-white">
+        {/* ── HERO ─────────────────────────────────────────────────────────── */}
+        <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20 relative overflow-hidden">
+          {/* Background blobs */}
+          <div className="absolute inset-0 bg-black/50 z-10" />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover"
+          >
+            <source src={video} type="video/mp4" />
+          </video>
+          <div
+            className="hero-blob"
+            style={{
+              width: 350,
+              height: 350,
+              background:
+                "radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%)",
+              bottom: -80,
+              left: "15%",
+              animation: "float 12s ease-in-out 3s infinite",
+            }}
+          />
+          {/* Grid texture */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              pointerEvents: "none",
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px)",
+              backgroundSize: "60px 60px",
+            }}
+          />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {cloudServices.map((service, index) => (
-              <ServiceCard
-                key={index}
-                service={service}
-                accentClass="from-blue-500 to-cyan-400"
-              />
-            ))}
-          </div>
-
-          {/* Cloud migration lead magnet */}
-          <div className="mt-12 max-w-2xl mx-auto">
-            <LeadMagnetForm
-              title="Cloud Migration Checklist"
-              description="A 47-point pre-migration checklist covering security, data governance, rollback strategy, and stakeholder sign-off for enterprise cloud moves."
-              resourceName="the Cloud Migration Checklist"
-              buttonLabel="Download free"
-            />
-          </div>
-
-          <div className="mt-8 text-center">
-            <Link
-              to="/cloud-adobe-solutions"
-              className="inline-flex items-center bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-cyan-500 transition-all font-medium"
-            >
-              Explore Cloud & Adobe Solutions
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 6. CUSTOM APP DEV ───────────────────────────────────────────────── */}
-      <section className="bg-slate-50 py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            {/* <span className="text-xs font-semibold text-purple-500 uppercase tracking-widest mb-3 block">
-              Bespoke builds
-            </span> */}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Custom Application Development
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Enterprise-grade applications built with modern technologies
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {developmentServices.map((service, index) => (
-              <ServiceCard
-                key={index}
-                service={service}
-                accentClass="from-purple-500 to-pink-500"
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── 7. HOW WE WORK ──────────────────────────────────────────────────── */}
-      <section className="py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            {/* <span className="text-xs font-semibold text-emerald-600 uppercase tracking-widest mb-3 block">
-              Our engagement model
-            </span> */}
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              How we work
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              A structured, low-risk delivery model built for enterprise
-              procurement and compliance requirements
-            </p>
-          </div>
-
-          <div className="relative">
-            {/* Connector line */}
-            <div className="hidden lg:block absolute top-10 left-0 right-0 h-0.5 bg-gray-200 mx-32 z-0" />
-
-            <div className="grid md:grid-cols-5 gap-6 relative z-10">
-              {processSteps.map((step, i) => {
-                const Icon = step.icon;
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-col items-center text-center"
-                  >
-                    <div className="w-20 h-20 rounded-2xl bg-white border-2 border-gray-200 flex flex-col items-center justify-center mb-4 shadow-sm">
-                      <Icon className="h-6 w-6 text-blue-600 mb-1" />
-                      <span className="text-xs font-bold text-gray-400">
-                        {step.number}
-                      </span>
-                    </div>
-                    <h3 className="text-base font-semibold text-gray-900 mb-2">
-                      {step.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-3 leading-relaxed">
-                      {step.description}
-                    </p>
-                    <div className="flex items-center gap-1.5 text-xs text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
-                      <CheckCircle className="h-3 w-3 flex-shrink-0" />
-                      <span>{step.deliverable}</span>
-                    </div>
-                  </div>
-                );
-              })}
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div className="max-w-4xl mx-auto text-center">
+              <h1 className="hero-title text-4xl md:text-5xl font-bold mb-6">
+                Our Services
+              </h1>
+              <p className="hero-sub text-xl text-gray-300">
+                Comprehensive technology solutions designed to accelerate your
+                digital transformation journey
+              </p>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── 8. TESTIMONIALS ─────────────────────────────────────────────────── 
-      <section className="bg-slate-50 py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-14">
-             <span className="text-xs font-semibold text-amber-600 uppercase tracking-widest mb-3 block">
-              What clients say
-            </span> 
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Testimonials
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {testimonials.map((t, i) => (
-              <div
-                key={i}
-                className="bg-white rounded-xl border border-gray-200 p-7 flex flex-col"
-              >
-                <div className="flex gap-0.5 mb-4">
-                  {[...Array(5)].map((_, s) => (
-                    <Star
-                      key={s}
-                      className="h-4 w-4 text-amber-400 fill-amber-400"
-                    />
-                  ))}
-                </div>
-                <p className="text-gray-700 text-sm leading-relaxed mb-6 flex-1 italic">
-                  "{t.quote}"
-                </p>
-                <div className="flex items-center gap-3 pt-4 border-t border-gray-100">
-                  <div className="w-9 h-9 rounded-full bg-blue-100 text-blue-700 text-xs font-bold flex items-center justify-center flex-shrink-0">
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-gray-900">
-                      {t.name}
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      {t.title}, {t.company}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>*/}
-
-      {/* ── 9. TECHNOLOGIES ─────────────────────────────────────────────────── */}
-      <section className="bg-gradient-to-br from-slate-900 to-slate-800 text-white py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Technologies We Use
-            </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Modern technology stack for building scalable solutions
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {technologies.map((tech, index) => (
-              <div
-                key={index}
-                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-6"
-              >
-                <div
-                  className={`inline-flex items-center gap-2 bg-gradient-to-r ${tech.accent} text-white text-xs font-semibold px-3 py-1 rounded-full mb-4`}
-                >
-                  {tech.category}
-                </div>
-                <ul className="space-y-2">
-                  {tech.items.map((item, i) => (
-                    <li
-                      key={i}
-                      className="text-gray-300 flex items-center text-sm"
-                    >
-                      <span className="w-1.5 h-1.5 bg-cyan-400 rounded-full mr-3 flex-shrink-0"></span>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-12">
-            <Link
-              to="/technologies"
-              className="inline-flex items-center bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-8 py-3 rounded-lg hover:from-blue-600 hover:to-cyan-500 transition-all font-medium"
-            >
-              View All Technologies
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 10. SECURITY / CREDIBILITY STRIP ────────────────────────────────── */}
-      {/* <section className="border-y border-gray-100 py-10 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-center gap-10">
-            {[
-              {
-                label: "Enterprise security",
-                sub: "Security-first architecture",
-              },
-              { label: "ISO 27001", sub: "Certification in progress" },
-              { label: "SOC 2 ready", sub: "Compliance practices in place" },
-              { label: "Adobe partner", sub: "Certified implementation" },
-              { label: "24/7 support", sub: "SLA-backed response times" },
-            ].map((item, i) => (
-              <div key={i} className="text-center">
-                <div className="text-sm font-semibold text-gray-800">
-                  {item.label}
-                </div>
-                <div className="text-xs text-gray-400">{item.sub}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
-      {/* ── 11. SECURITY LEAD MAGNET ────────────────────────────────────────── */}
-      <section className="py-14 bg-slate-50">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-2xl">
-          <LeadMagnetForm
-            title="Security Readiness Guide"
-            description="A practical guide for enterprise teams preparing for cloud security audits — covering IAM, encryption, logging, incident response, and compliance mapping."
-            resourceName="the Security Readiness Guide"
-            buttonLabel="Get free guide"
-          />
-        </div>
-      </section>
-
-      {/* ── 12. BOTTOM CTA ──────────────────────────────────────────────────── */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-12 text-center text-white relative overflow-hidden">
-            {/* Decorative accent */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-64 h-1 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-b-full" />
-
-            <div className="flex items-center justify-center gap-1 mb-4">
-              {[...Array(5)].map((_, i) => (
-                <Star
-                  key={i}
-                  className="h-4 w-4 text-amber-400 fill-amber-400"
+        {/* ── CUSTOM APP DEV ───────────────────────────────────────────────── */}
+        <section className="bg-slate-50 py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              title="Custom Application Development"
+              subtitle="Enterprise-grade applications built with modern technologies"
+            />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {developmentServices.map((service, index) => (
+                <FlipServiceCard
+                  key={index}
+                  service={service}
+                  index={index}
+                  delay={index * 70}
                 />
               ))}
-              <span className="text-sm text-gray-400 ml-2">
-                Rated 4.9 / 5 by enterprise clients
-              </span>
             </div>
-
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to modernise your{" "}
-              <span className="text-cyan-400">digital experience stack?</span>
-            </h2>
-            <p className="text-lg mb-10 text-gray-300 max-w-2xl mx-auto">
-              Book a free 45-minute architecture review. We'll map your current
-              stack, identify risk areas, and outline a migration path — with no
-              obligation.
-            </p>
-
-            {/* Primary CTA */}
-            <Link
-              to="/contact"
-              className="inline-flex items-center bg-cyan-500 hover:bg-cyan-400 text-white font-semibold px-8 py-4 rounded-xl transition-colors gap-2 text-lg mb-8"
-            >
-              <Calendar className="h-5 w-5" />
-              Book a Free Architecture Review
-            </Link>
-
-            {/* Secondary: email capture */}
-            <p className="text-sm text-gray-400 mb-4">
-              Not ready for a call? Download our Cloud Migration Checklist
-              instead.
-            </p>
-            {bottomSubmitted ? (
-              <div className="inline-flex items-center gap-2 text-emerald-400 text-sm font-medium">
-                <CheckCircle className="h-4 w-4" />
-                Sent! Check your inbox for the checklist.
-              </div>
-            ) : (
-              <form
-                onSubmit={handleBottomSubmit}
-                className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
-              >
-                <input
-                  type="email"
-                  placeholder="Your work email"
-                  value={bottomEmail}
-                  onChange={(e) => setBottomEmail(e.target.value)}
-                  required
-                  className="flex-1 text-sm bg-white/10 border border-white/20 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400"
-                />
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 border border-white/30 text-white font-medium px-5 py-3 rounded-lg transition-colors text-sm whitespace-nowrap"
-                >
-                  <Download className="h-4 w-4" />
-                  Send me the checklist
-                </button>
-              </form>
-            )}
           </div>
+        </section>
+        {/* ── CLOUD SOLUTIONS ──────────────────────────────────────────────── */}
+        <section className="py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              title="Cloud Solutions"
+              subtitle="Multi-cloud expertise across AWS, Azure, and Google Cloud Platform"
+            />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {cloudServices.map((service, index) => (
+                <ServiceCard
+                  key={index}
+                  service={service}
+                  accentClass="from-blue-500 to-cyan-400"
+                  delay={index * 80}
+                />
+              ))}
+            </div>
+            {/* <FadeIn delay={200}>
+              <div className="mt-10 text-center">
+                <Link
+                  to="/cloud-adobe-solutions"
+                  className="btn-gradient inline-flex items-center text-white font-medium px-8 py-3 rounded-lg gap-2"
+                >
+                  Explore Cloud & Adobe Solutions{" "}
+                  <ArrowRight className="h-5 w-5" />
+                </Link>
+              </div>
+            </FadeIn> */}
+          </div>
+        </section>
+
+        {/* ── ADOBE EXPERIENCE CLOUD ───────────────────────────────────────── */}
+        <section className="py-20">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <SectionHeader
+              title="Adobe Experience Cloud Solutions"
+              subtitle="Full-spectrum Adobe services from implementation to managed support"
+            />
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {adobeServices.map((service, index) => (
+                <ServiceCard
+                  key={index}
+                  service={service}
+                  accentClass="from-red-500 to-orange-500"
+                  delay={index * 80}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ── TECHNOLOGIES ─────────────────────────────────────────────────── */}
+        <section className="bg-slate-50 py-20 relative overflow-hidden">
+          <div
+            className="hero-blob"
+            style={{
+              width: 400,
+              height: 400,
+              background:
+                "radial-gradient(circle, rgba(99,102,241,0.1) 0%, transparent 70%)",
+              top: -100,
+              left: -100,
+              animation: "float 11s ease-in-out infinite",
+            }}
+          />
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <SectionHeader
+              title="View Technologies We Use"
+              subtitle="Modern technology stack for building scalable solutions"
+            />
+            <FadeIn delay={200}>
+              <div className="text-center mt-12">
+                <Link
+                  to="/technologies"
+                  className="btn-gradient inline-flex items-center text-white font-medium px-8 py-3 rounded-lg gap-2"
+                >
+                  View All Technologies <ArrowRight className="h-5 w-5" />
+                </Link>
+              </div>
+            </FadeIn>
+          </div>
+        </section>
+
+        {/* ── BOTTOM CTA ───────────────────────────────────────────────────── */}
+        <section className="py-20 bg-white">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <FadeIn>
+              <BottomCTA
+                bottomEmail={bottomEmail}
+                setBottomEmail={setBottomEmail}
+                bottomSubmitted={bottomSubmitted}
+                handleBottomSubmit={handleBottomSubmit}
+              />
+            </FadeIn>
+          </div>
+        </section>
+      </div>
+    </>
+  );
+}
+
+// ─── BOTTOM CTA ──────────────────────────────────────────────────────────────
+
+function BottomCTA({
+  bottomEmail,
+  setBottomEmail,
+  bottomSubmitted,
+  handleBottomSubmit,
+}) {
+  const [hovered, setHovered] = useState(false);
+  return (
+    <div
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-3xl p-12 text-center text-white relative overflow-hidden"
+      style={{
+        transition: "box-shadow 0.4s ease",
+        boxShadow: hovered
+          ? "0 32px 80px rgba(0,0,0,0.25)"
+          : "0 8px 32px rgba(0,0,0,0.12)",
+      }}
+    >
+      {/* Top accent bar */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: "50%",
+          transform: "translateX(-50%)",
+          width: hovered ? "40%" : "16rem",
+          height: 3,
+          borderRadius: "0 0 8px 8px",
+          background: "linear-gradient(90deg, #22d3ee, #3b82f6)",
+          transition: "width 0.4s ease",
+        }}
+      />
+
+      {/* Floating blobs inside card */}
+      <div
+        style={{
+          position: "absolute",
+          width: 300,
+          height: 300,
+          borderRadius: "50%",
+          background:
+            "radial-gradient(circle, rgba(6,182,212,0.07) 0%, transparent 70%)",
+          top: -80,
+          right: -80,
+          animation: "float 8s ease-in-out infinite",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Stars */}
+      <div className="flex items-center justify-center gap-1 mb-4">
+        {[...Array(5)].map((_, i) => (
+          <Star
+            key={i}
+            className="h-4 w-4 text-amber-400 fill-amber-400"
+            style={{ animation: `pop-in 0.4s ease ${i * 80}ms both` }}
+          />
+        ))}
+        <span className="text-sm text-gray-400 ml-2">
+          Rated 4.9 / 5 by enterprise clients
+        </span>
+      </div>
+
+      <h2 className="text-3xl md:text-4xl font-bold mb-4">
+        Ready to modernise your{" "}
+        <span
+          style={{
+            background: "linear-gradient(90deg, #22d3ee, #60a5fa, #22d3ee)",
+            backgroundSize: "200% auto",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            backgroundClip: "text",
+            animation: "shimmer 3s linear infinite",
+          }}
+        >
+          digital experience stack?
+        </span>
+      </h2>
+      <p className="text-lg mb-10 text-gray-300 max-w-2xl mx-auto">
+        Book a free 45-minute architecture review. We'll map your current stack,
+        identify risk areas, and outline a migration path — with no obligation.
+      </p>
+
+      <Link
+        to="https://calendly.com/khankureakash0285/for-website"
+        className="inline-flex items-center bg-cyan-500 text-white font-semibold px-8 py-4 rounded-xl gap-2 text-lg mb-8"
+        style={{
+          transition:
+            "transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease",
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = "scale(1.05)";
+          e.currentTarget.style.boxShadow = "0 12px 32px rgba(6,182,212,0.45)";
+          e.currentTarget.style.background = "#22d3ee";
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = "";
+          e.currentTarget.style.boxShadow = "";
+          e.currentTarget.style.background = "";
+        }}
+      >
+        <Calendar className="h-5 w-5" />
+        Book a Free Architecture Review
+      </Link>
+
+      {/* <p className="text-sm text-gray-400 mb-4">
+        Not ready for a call? Download our Cloud Migration Checklist instead.
+      </p> 
+      {bottomSubmitted ? (
+        <div className="inline-flex items-center gap-2 text-emerald-400 text-sm font-medium">
+          <CheckCircle className="h-4 w-4" /> Sent! Check your inbox for the
+          checklist.
         </div>
-      </section>
+      ) : (
+        <form
+          onSubmit={handleBottomSubmit}
+          className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+        >
+          <input
+            type="email"
+            placeholder="Your work email"
+            value={bottomEmail}
+            onChange={(e) => setBottomEmail(e.target.value)}
+            required
+            className="flex-1 text-sm bg-white/10 border border-white/20 text-white placeholder-gray-400 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-cyan-400"
+            style={{
+              transition: "border-color 0.2s ease, background 0.2s ease",
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = "rgba(6,182,212,0.6)";
+              e.target.style.background = "rgba(255,255,255,0.14)";
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = "";
+              e.target.style.background = "";
+            }}
+          />
+          <button
+            type="submit"
+            className="inline-flex items-center gap-2 bg-white/10 border border-white/30 text-white font-medium px-5 py-3 rounded-lg text-sm whitespace-nowrap"
+            style={{ transition: "background 0.2s ease, transform 0.15s ease" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(255,255,255,0.2)";
+              e.currentTarget.style.transform = "scale(1.03)";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "";
+              e.currentTarget.style.transform = "";
+            }}
+          >
+            <Download className="h-4 w-4" /> Send me the checklist
+          </button>
+        </form>
+      
+      )}  */}
     </div>
   );
 }
