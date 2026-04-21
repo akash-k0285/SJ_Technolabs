@@ -1,12 +1,14 @@
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ChevronDown } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 
 export function Header() {
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
   const [aboutOpen, setAboutOpen] = useState(false);
+  const servicesRef = useRef(null);
+  const aboutRef = useRef(null);
 
   const isActive = (href) => {
     if (href === "/") {
@@ -15,6 +17,22 @@ export function Header() {
     return location.pathname.startsWith(href);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (servicesRef.current && !servicesRef.current.contains(event.target)) {
+        setServicesOpen(false);
+      }
+
+      if (aboutRef.current && !aboutRef.current.contains(event.target)) {
+        setAboutOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
   return (
     <header className="bg-slate-900 text-white sticky top-0 z-50 shadow-lg">
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -42,9 +60,12 @@ export function Header() {
             </Link>
 
             {/* Services Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={servicesRef}>
               <button
-                onClick={() => setServicesOpen(!servicesOpen)}
+                onClick={() => {
+                  setServicesOpen(!servicesOpen);
+                  setAboutOpen(false);
+                }}
                 className="flex items-center gap-1 px-3 py-2 text-gray-300 hover:bg-slate-800 hover:text-white rounded-md cursor-pointer"
               >
                 Services
@@ -77,21 +98,24 @@ export function Header() {
                     Technologies
                   </Link>
 
-                  <Link
+                  {/* <Link
                     to="/cloud-adobe-solutions"
                     onClick={() => setServicesOpen(false)}
                     className="px-4 py-2 hover:bg-slate-700"
                   >
                     Cloud & Adobe Solutions
-                  </Link>
+                  </Link> */}
                 </div>
               )}
             </div>
 
             {/* About Dropdown */}
-            <div className="relative">
+            <div className="relative" ref={aboutRef}>
               <button
-                onClick={() => setAboutOpen(!aboutOpen)}
+                onClick={() => {
+                  setAboutOpen(!aboutOpen);
+                  setServicesOpen(false);
+                }}
                 className="flex items-center gap-1 px-3 py-2 text-gray-300 hover:bg-slate-800 hover:text-white rounded-md cursor-pointer"
               >
                 Company
@@ -119,8 +143,8 @@ export function Header() {
               )}
             </div>
 
-            {/* Our Plans */}
-            {/* <Link
+            {/* Our Plans 
+            <Link
               to="/plans"
               className={`px-3 py-2 rounded-md text-sm transition-colors ${
                 isActive("/plans")
@@ -129,7 +153,8 @@ export function Header() {
               }`}
             >
               Our Plans
-            </Link> */}
+            </Link>
+            */}
           </div>
 
           {/* CTA Button (Extreme Right) */}
@@ -137,7 +162,11 @@ export function Header() {
             <a
               href="https://calendly.com/khankureakash0285/for-website"
               target="_blank"
-              className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-6 py-2.5 rounded-lg hover:from-blue-600 hover:to-cyan-500 transition-all font-medium shadow-lg"
+              className="btn-shimmer inline-flex items-center justify-center text-white font-medium px-6 py-3 rounded-lg gap-2"
+              style={{
+                animation:
+                  "shimmer 3s linear infinite, pulse-ring 2.5s 1.5s infinite",
+              }}
             >
               Book Free Consultation
             </a>
@@ -200,13 +229,13 @@ export function Header() {
                 Technologies
               </Link>
 
-              <Link
+              {/* <Link
                 to="/cloud-adobe-solutions"
                 onClick={() => setMobileMenuOpen(false)}
                 className="px-4 py-2.5 hover:bg-slate-800 rounded-md"
               >
                 Cloud & Adobe Solutions
-              </Link>
+              </Link> */}
 
               {/* <Link
                 to="/plans"
