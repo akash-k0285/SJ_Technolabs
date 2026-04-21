@@ -130,9 +130,9 @@ export function Home() {
 
   const stats = [
     { label: "Years of Excellence", value: "15+", num: "15", suffix: "+" },
-    { label: "Enterprise Clients", value: "200+", num: "200", suffix: "+" },
-    { label: "Projects Delivered", value: "500+", num: "500", suffix: "+" },
-    { label: "Global Team Members", value: "300+", num: "300", suffix: "+" },
+    { label: "Enterprise Clients", value: "20+", num: "20", suffix: "+" },
+    { label: "Projects Delivered", value: "50+", num: "50", suffix: "+" },
+    { label: "Global Team Members", value: "30+", num: "30", suffix: "+" },
   ];
 
   const [heroVisible, setHeroVisible] = useState(false);

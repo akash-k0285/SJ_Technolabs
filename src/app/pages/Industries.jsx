@@ -24,6 +24,7 @@ import {
   ShieldCheck,
 } from "lucide-react";
 import video from "../../assets/boxgrid.mp4";
+import CrossIndustryCapabilities from "../components/CrossIndustryCapabilities";
 
 // ─── DATA (unchanged) ────────────────────────────────────────────────────────
 
@@ -316,56 +317,6 @@ const industries = [
     ],
     caseMetric: { value: "25%", label: "increase in direct bookings" },
     persona: "VP Guest Experience",
-  },
-];
-
-const crossCapabilities = [
-  {
-    title: "Digital Experience Platforms",
-    description:
-      "Adobe Experience Cloud implementation for personalised customer journeys",
-    icon: Layers,
-  },
-  {
-    title: "Cloud Infrastructure",
-    description:
-      "Multi-cloud architecture design and implementation (AWS, Azure, GCP)",
-    icon: ShieldCheck,
-  },
-  {
-    title: "Data & Analytics",
-    description:
-      "Business intelligence, data warehousing, and advanced analytics",
-    icon: TrendingUp,
-  },
-  {
-    title: "Mobile Solutions",
-    description:
-      "Native and cross-platform mobile applications for iOS and Android",
-    icon: MessageCircle,
-  },
-  {
-    title: "API & Integration",
-    description:
-      "Microservices architecture and third-party system integrations",
-    icon: ArrowRight,
-  },
-  {
-    title: "Security & Compliance",
-    description:
-      "Enterprise-grade security, data privacy, and regulatory compliance",
-    icon: ShieldCheck,
-  },
-  {
-    title: "DevOps & Automation",
-    description:
-      "CI/CD pipelines, infrastructure as code, and automated testing",
-    icon: TrendingUp,
-  },
-  {
-    title: "AI & Machine Learning",
-    description: "AI-ready architectures and intelligent automation solutions",
-    icon: Layers,
   },
 ];
 
@@ -667,63 +618,6 @@ function IndustryCard({ industry, index }) {
   );
 }
 
-// ─── CAPABILITY CARD ─────────────────────────────────────────────────────────
-
-function CapabilityCard({ cap, index }) {
-  const [ref, inView] = useInView();
-  const [hovered, setHovered] = useState(false);
-  const Icon = cap.icon;
-  return (
-    <div
-      ref={ref}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      className="bg-white border border-gray-200 rounded-xl p-6 flex items-start gap-4"
-      style={{
-        opacity: inView ? 1 : 0,
-        transform: inView
-          ? hovered
-            ? "translateY(-4px)"
-            : "translateY(0)"
-          : "translateY(20px)",
-        transition: `opacity 0.5s ease ${index * 60}ms, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease`,
-        boxShadow: hovered ? "0 12px 32px rgba(0,0,0,0.09)" : "none",
-        borderColor: hovered ? "#bfdbfe" : "#e5e7eb",
-      }}
-    >
-      <div
-        className="w-9 h-9 bg-blue-50 rounded-lg flex items-center justify-center flex-shrink-0"
-        style={{
-          transition:
-            "background 0.25s ease, transform 0.3s cubic-bezier(0.34,1.56,0.64,1)",
-          background: hovered ? "#dbeafe" : "",
-          transform: hovered ? "scale(1.15) rotate(-5deg)" : "scale(1)",
-        }}
-      >
-        <Icon
-          className="h-4 w-4"
-          style={{
-            color: hovered ? "#1d4ed8" : "#2563eb",
-            transition: "color 0.2s ease",
-          }}
-        />
-      </div>
-      <div>
-        <h3
-          className="text-sm font-semibold text-gray-900 mb-1"
-          style={{
-            transition: "color 0.2s ease",
-            color: hovered ? "#1d4ed8" : "",
-          }}
-        >
-          {cap.title}
-        </h3>
-        <p className="text-sm text-gray-600">{cap.description}</p>
-      </div>
-    </div>
-  );
-}
-
 // ─── MAIN COMPONENT ──────────────────────────────────────────────────────────
 
 export function Industries() {
@@ -882,30 +776,8 @@ export function Industries() {
             </div>
           </div>
         </section>
-
+        <CrossIndustryCapabilities />
         {/* ── CROSS-INDUSTRY CAPABILITIES ──────────────────────────────────── */}
-        <section className="py-20 bg-slate-50">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <FadeIn>
-                <div className="text-center mb-14">
-                  <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                    Cross-industry capabilities
-                  </h2>
-                  <p className="text-lg text-gray-600">
-                    Beyond industry-specific expertise, we bring proven
-                    capabilities that apply across all sectors
-                  </p>
-                </div>
-              </FadeIn>
-              <div className="grid md:grid-cols-2 gap-5">
-                {crossCapabilities.map((cap, index) => (
-                  <CapabilityCard key={index} cap={cap} index={index} />
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
 
         {/* ── BOTTOM CTA ───────────────────────────────────────────────────── */}
         <section className="py-20 bg-white">

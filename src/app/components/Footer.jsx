@@ -3,10 +3,10 @@ import { Mail, Phone, MapPin, Linkedin, Twitter, Github } from "lucide-react";
 
 export function Footer() {
   const services = [
-    "Adobe Experience Cloud",
-    "Cloud Solutions",
-    "Custom Development",
-    "DevOps & CI/CD",
+    "Digital Platforms",
+    "Cloud & Infrastructure",
+    "Application Development",
+    "DevOps & Automation",
   ];
 
   const company = [
